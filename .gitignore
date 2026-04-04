@@ -1,0 +1,4 @@
+.env
+kubeconfig
+ansible/inventory.ini
+ansible/vars.yaml
