@@ -1,7 +1,11 @@
 -include .env
+export
 
 provision:
 	ansible-playbook -i "$(SERVER_HOST)," -u root ansible/provision.yaml
+
+master-key:
+	ansible-playbook -i "$(SERVER_HOST)," -u $(SERVER_USER) ansible/master-key.yaml
 
 users:
 	ansible-playbook -i "$(SERVER_HOST)," -u $(SERVER_USER) ansible/users.yaml
