@@ -2,7 +2,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - namespace.yaml
-  - helm-metrics.yaml
-  - helm-logs.yaml
+  - helmrelease-metrics.yaml
+  - helmrelease-logs.yaml
   - grafana-admin-secret.yaml
   - grafana-ingress.yaml
