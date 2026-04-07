@@ -15,6 +15,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 30m
+  releaseName: kube-prometheus-stack
   targetNamespace: monitoring
   install:
     remediation:
@@ -31,7 +32,6 @@ spec:
         name: prometheus-community
         namespace: flux-system
   values:
-    fullnameOverride: "monitoring"
     grafana:
       admin:
         existingSecret: grafana-admin
