@@ -32,6 +32,7 @@ spec:
         name: prometheus-community
         namespace: flux-system
   values:
+    fullnameOverride: "monitoring"
     grafana:
       admin:
         existingSecret: grafana-admin
