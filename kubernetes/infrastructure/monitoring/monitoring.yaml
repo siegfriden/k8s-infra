@@ -17,7 +17,6 @@ spec:
   interval: 30m
   targetNamespace: monitoring
   install:
-    createNamespace: true
     remediation:
       retries: 3
   upgrade:
