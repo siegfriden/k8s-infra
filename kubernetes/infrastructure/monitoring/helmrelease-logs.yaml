@@ -48,12 +48,6 @@ spec:
             targets = discovery.kubernetes.pods.targets
 
             rule {
-              source_labels = ["__meta_kubernetes_pod_name"]
-              regex         = "loki-canary.*"
-              action        = "drop"
-            }
-
-            rule {
               source_labels = ["__meta_kubernetes_namespace"]
               target_label  = "namespace"
             }
@@ -69,7 +63,6 @@ spec:
               source_labels = [
                 "__meta_kubernetes_pod_label_app_kubernetes_io_name",
                 "__meta_kubernetes_pod_label_app",
-                "__meta_kubernetes_pod_container_name",
               ]
               regex        = "^(?:;*)?([^;]+).*$"
               target_label = "app"
@@ -153,6 +146,11 @@ spec:
       replicas: 0
     write:
       replicas: 0
+
+    # Add label to loki-canary pod so it doesn't show as "unknown_service"
+    lokiCanary:
+      podLabels:
+        app.kubernetes.io/name: loki-canary
 
     # Disable bundled Grafana and Prometheus (already running)
     grafana:
