@@ -5,3 +5,4 @@ resources:
   - psa-governance.yaml
   - default-deny-networkpolicy.yaml
   - restrict-default-namespace.yaml
+  - restrict-system-namespaces.yaml

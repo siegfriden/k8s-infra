@@ -1,0 +1,46 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: restrict-system-namespaces
+  annotations:
+    policies.kyverno.io/title: Restrict System Namespaces
+    policies.kyverno.io/category: Multi-tenancy
+    policies.kyverno.io/description: >-
+      Prevents non-admin users and service accounts from creating or 
+      modifying workloads in core system namespaces.
+spec:
+  validationFailureAction: Enforce
+  background: true
+  rules:
+    - name: block-system-namespace-writes
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+                - Deployment
+                - StatefulSet
+                - DaemonSet
+                - Job
+                - CronJob
+              namespaces:
+                - kube-system
+                - flux-system
+                - kyverno
+                - cert-manager
+                - monitoring
+      exclude:
+        any:
+          - clusterRoles:
+              - cluster-admin
+          - groups:
+              - system:masters
+          - resources:
+              subjects:
+                - "system:serviceaccount:kube-system:*"
+                - "system:serviceaccount:flux-system:*"
+                - "system:serviceaccount:kyverno:*"
+                - "system:serviceaccount:monitoring:*"
+      validate:
+        message: "Manually deploying workloads to system namespaces is forbidden. Use Flux or contact a cluster-admin."
+        deny: {}
