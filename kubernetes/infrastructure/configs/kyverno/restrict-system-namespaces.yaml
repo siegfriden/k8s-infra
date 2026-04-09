@@ -10,7 +10,6 @@ metadata:
       modifying workloads in core system namespaces.
 spec:
   validationFailureAction: Enforce
-  background: true
   rules:
     - name: block-system-namespace-writes
       match:
@@ -33,9 +32,9 @@ spec:
         any:
           - clusterRoles:
               - cluster-admin
-          - groups:
-              - system:masters
           - subjects:
+              - kind: Group
+                name: system:masters
               - kind: ServiceAccount
                 namespace: kube-system
               - kind: ServiceAccount
