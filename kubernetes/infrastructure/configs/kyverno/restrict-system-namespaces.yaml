@@ -35,12 +35,17 @@ spec:
               - cluster-admin
           - groups:
               - system:masters
-          - resources:
-              subjects:
-                - "system:serviceaccount:kube-system:*"
-                - "system:serviceaccount:flux-system:*"
-                - "system:serviceaccount:kyverno:*"
-                - "system:serviceaccount:monitoring:*"
+          - subjects:
+              - kind: ServiceAccount
+                namespace: kube-system
+              - kind: ServiceAccount
+                namespace: flux-system
+              - kind: ServiceAccount
+                namespace: kyverno
+              - kind: ServiceAccount
+                namespace: cert-manager
+              - kind: ServiceAccount
+                namespace: monitoring
       validate:
         message: "Manually deploying workloads to system namespaces is forbidden. Use Flux or contact a cluster-admin."
         deny: {}
