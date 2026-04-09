@@ -1,0 +1,58 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: psa-governance
+  annotations:
+    policies.kyverno.io/title: PSA Label Governance
+    policies.kyverno.io/category: Multi-tenancy
+    policies.kyverno.io/description: >-
+      Automatically labels all namespaces with Pod Security Admission (PSA) 
+      restricted profile, while excluding system-critical namespaces.
+spec:
+  mutateExistingOnPolicyUpdate: true
+  rules:
+    - name: label-restricted-psa
+      match:
+        any:
+          - resources:
+              kinds:
+                - Namespace
+      exclude:
+        any:
+          - resources:
+              names:
+                - kube-system
+                - flux-system
+                - kyverno
+                - kube-public
+                - kube-node-lease
+      mutate:
+        patchStrategicMerge:
+          metadata:
+            labels:
+              pod-security.kubernetes.io/enforce: restricted
+              pod-security.kubernetes.io/enforce-version: latest
+              pod-security.kubernetes.io/warn: restricted
+              pod-security.kubernetes.io/warn-version: latest
+    - name: prevent-psa-label-weakening
+      match:
+        any:
+          - resources:
+              kinds:
+                - Namespace
+      exclude:
+        any:
+          - resources:
+              names:
+                - kube-system
+                - flux-system
+                - kyverno
+                - kube-public
+                - kube-node-lease
+      validate:
+        message: "PSA restricted labels cannot be removed or weakened. This namespace must follow cluster-wide security governance."
+        pattern:
+          metadata:
+            labels:
+              pod-security.kubernetes.io/enforce: restricted
+              pod-security.kubernetes.io/enforce-version: latest
