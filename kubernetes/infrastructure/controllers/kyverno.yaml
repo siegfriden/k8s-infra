@@ -33,13 +33,14 @@ spec:
       rbac:
         clusterRole:
           extraResources:
-          - apiGroups:
-              - ""
-            resources:
-              - serviceaccounts
-            verbs:
-              - get
-              - list
-              - watch
-              - update
-              - patch
+            - apiGroups:
+                - ""
+              resources:
+                - namespaces
+                - serviceaccounts
+              verbs:
+                - get
+                - list
+                - watch
+                - update
+                - patch
