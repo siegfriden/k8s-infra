@@ -21,6 +21,7 @@ spec:
           - resources:
               namespaces:
                 - kube-system
+                - flux-system
       validate:
         message: "Adding the NET_RAW capability is not allowed."
         deny:
