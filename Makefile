@@ -20,7 +20,7 @@ tunnel:
 	ssh -L 6443:localhost:6443 $(SERVER_USER)@$(SERVER_HOST)
 
 kubeconfig:
-	scp $(SERVER_USER)@$(SERVER_HOST):/etc/rancher/rke2/rke2.yaml ./kubeconfig
+	scp $(SERVER_USER)@$(SERVER_HOST):/etc/rancher/k3s/k3s.yaml ./kubeconfig
 
 bootstrap:
 	@make kubeconfig

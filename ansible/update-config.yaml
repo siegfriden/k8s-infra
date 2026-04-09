@@ -1,29 +1,20 @@
 ---
-- name: Update RKE2 config and restart
+- name: Update K3s config and restart
   hosts: all
   become: true
 
   tasks:
-    - name: Copy RKE2 config files
+    - name: Copy K3s config files
       copy:
-        src: files/rke2/
-        dest: /etc/rancher/rke2/
+        src: files/k3s/
+        dest: /etc/rancher/k3s/
         owner: root
         group: root
-        mode: "0600"
-      notify: Restart rke2-server
-
-    - name: Copy kubelet config
-      copy:
-        src: files/kubelet/
-        dest: /etc/rancher/rke2/agent/etc/kubelet.conf.d/
-        owner: root
-        group: root
-        mode: "0600"
-      notify: Restart rke2-server
+        mode: "0644"
+      notify: Restart k3s
 
   handlers:
-    - name: Restart rke2-server
+    - name: Restart k3s
       systemd:
-        name: rke2-server
+        name: k3s
         state: restarted
