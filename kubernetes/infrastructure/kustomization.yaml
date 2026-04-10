@@ -4,5 +4,6 @@ resources:
   - cert-manager.yaml
   - envoy-gateway.yaml
   - ingress.yaml
+  - linkerd.yaml
   - monitoring.yaml
   - sealed-secrets.yaml

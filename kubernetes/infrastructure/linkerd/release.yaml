@@ -17,7 +17,6 @@ spec:
   interval: 30m
   targetNamespace: linkerd
   install:
-    createNamespace: true
     remediation:
       retries: 3
   upgrade:
@@ -39,10 +38,11 @@ metadata:
   name: linkerd-control-plane
   namespace: flux-system
 spec:
+  dependsOn:
+    - name: linkerd-crds
   interval: 30m
   targetNamespace: linkerd
   install:
-    createNamespace: true
     remediation:
       retries: 3
   upgrade:
@@ -61,3 +61,29 @@ spec:
       externalCA: true
       issuer:
         scheme: kubernetes.io/tls
+
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: linkerd-viz
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: linkerd-control-plane
+  interval: 30m
+  targetNamespace: linkerd-viz
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+  chart:
+    spec:
+      chart: linkerd-viz
+      version: "2025.*"
+      sourceRef:
+        kind: HelmRepository
+        name: linkerd
+        namespace: flux-system
