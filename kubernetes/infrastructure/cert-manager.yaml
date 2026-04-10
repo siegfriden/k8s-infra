@@ -1,16 +1,15 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: monitoring
+  name: cert-manager
   namespace: flux-system
 spec:
   interval: 10m
   dependsOn:
     - name: sealed-secrets
-    - name: envoy-gateway
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: ./kubernetes/infrastructure/monitoring
+  path: ./kubernetes/infrastructure/cert-manager
   prune: true
   wait: true
