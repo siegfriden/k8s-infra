@@ -1,0 +1,51 @@
+---
+- name: Reinstall K3s
+  hosts: all
+  become: true
+  vars_files:
+    - vars.yaml
+
+  tasks:
+    - name: Check if k3s-uninstall.sh exists
+      stat:
+        path: /usr/local/bin/k3s-uninstall.sh
+      register: uninstall_script
+
+    - name: Run k3s-uninstall.sh
+      command: /usr/local/bin/k3s-uninstall.sh
+      when: uninstall_script.stat.exists
+
+    - name: Clean up k3s directories
+      file:
+        path: "{{ item }}"
+        state: absent
+      loop:
+        - /etc/rancher/k3s
+        - /var/lib/rancher/k3s
+
+    - name: Copy K3s config files
+      copy:
+        src: files/k3s/
+        dest: /etc/rancher/k3s/
+        owner: root
+        group: root
+        mode: "0644"
+
+    - name: Install k3s
+      shell: curl -sfL https://get.k3s.io | sh -
+      register: install_result
+      changed_when: "'k3s installed' in install_result.stdout or install_result.rc == 0"
+
+    - name: Wait for k3s to be ready
+      command: k3s kubectl get nodes
+      register: k3s_ready
+      retries: 10
+      delay: 5
+      until: k3s_ready.rc == 0
+      changed_when: false
+
+    - name: Install Gateway API CRDs
+      command: >
+        k3s kubectl apply -f
+        https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.2.1/standard-install.yaml
+      changed_when: false

@@ -1,10 +1,13 @@
 -include .env
 export
 
-.PHONY: provision update-config master-key users forget tunnel kubeconfig bootstrap
+.PHONY: provision reinstall update-config master-key users forget tunnel kubeconfig bootstrap
 
 provision:
 	ansible-playbook -i "$(SERVER_HOST)," -u root ansible/provision.yaml
+
+reinstall:
+	ansible-playbook -i "$(SERVER_HOST)," -u $(SERVER_USER) ansible/reinstall.yaml
 
 update-config:
 	ansible-playbook -i "$(SERVER_HOST)," -u $(SERVER_USER) ansible/update-config.yaml
