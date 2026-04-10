@@ -3,4 +3,6 @@ kind: Kustomization
 resources:
   - cert-manager.yaml
   - envoy-gateway.yaml
+  - ingress.yaml
+  - monitoring.yaml
   - sealed-secrets.yaml

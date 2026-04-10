@@ -42,6 +42,7 @@ spec:
   interval: 30m
   targetNamespace: linkerd
   install:
+    createNamespace: true
     remediation:
       retries: 3
   upgrade:
