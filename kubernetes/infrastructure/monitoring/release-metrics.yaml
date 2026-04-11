@@ -46,28 +46,25 @@ spec:
           url: http://loki.monitoring.svc.cluster.local:3100
           access: proxy
           isDefault: false
-      sidecar:
-        dashboards:
-          enabled: true
       dashboards:
         default:
           linkerd-top-line:
-            url: https://raw.githubusercontent.com/linkerd/linkerd2/main/grafana/dashboards/top-line.json
+            gnetId: 15474
             datasource: Prometheus
           linkerd-health:
-            url: https://raw.githubusercontent.com/linkerd/linkerd2/main/grafana/dashboards/health.json
+            gnetId: 15486
             datasource: Prometheus
           linkerd-deployment:
-            url: https://raw.githubusercontent.com/linkerd/linkerd2/main/grafana/dashboards/deployment.json
+            gnetId: 15475
             datasource: Prometheus
           linkerd-pod:
-            url: https://raw.githubusercontent.com/linkerd/linkerd2/main/grafana/dashboards/pod.json
+            gnetId: 15477
             datasource: Prometheus
           linkerd-service:
-            url: https://raw.githubusercontent.com/linkerd/linkerd2/main/grafana/dashboards/service.json
+            gnetId: 15480
             datasource: Prometheus
           linkerd-namespace:
-            url: https://raw.githubusercontent.com/linkerd/linkerd2/main/grafana/dashboards/namespace.json
+            gnetId: 15478
             datasource: Prometheus
     prometheus:
       prometheusSpec:
