@@ -96,3 +96,6 @@ spec:
         kind: HelmRepository
         name: linkerd
         namespace: flux-system
+  values:
+    dashboard:
+      enforcedHostRegexp: ".*"
