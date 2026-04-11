@@ -114,8 +114,6 @@ spec:
         kind: HelmRepository
         name: grafana
         namespace: flux-system
-  test:
-    enable: false
   values:
     deploymentMode: SingleBinary
 
@@ -170,8 +168,6 @@ spec:
     chunksCache:
       enabled: false
     resultsCache:
-      enabled: false
-    lokiCanary:
       enabled: false
     gateway:
       enabled: false
