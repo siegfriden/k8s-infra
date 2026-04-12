@@ -46,6 +46,24 @@ spec:
           url: http://loki.monitoring.svc.cluster.local:3100
           access: proxy
           isDefault: false
+        - name: DS_LOKI
+          type: loki
+          url: http://loki.monitoring.svc.cluster.local:3100
+          access: proxy
+        - name: DS_PROMETHEUS
+          type: prometheus
+          url: http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090
+          access: proxy
+      sidecar:
+        dashboards:
+          enabled: true
+          searchNamespace: ALL
+          label: grafana_dashboard
+          folder: /var/lib/grafana/dashboards
+        datasources:
+          enabled: true
+          searchNamespace: ALL
+          label: grafana_datasource
       dashboards:
         default:
           linkerd-top-line:
@@ -100,6 +118,7 @@ spec:
             gnetId: 15482
             revision: 3
             datasource: Prometheus
+
     prometheus:
       prometheusSpec:
         scrapeInterval: 60s
@@ -198,6 +217,7 @@ spec:
               - source_labels: [__name__]
                 regex: "process_.*"
                 action: drop
+
     prometheusOperator:
       prometheusConfigReloader:
         resources:
@@ -206,8 +226,10 @@ spec:
             memory: 25Mi
           limits:
             memory: 50Mi
+
     alertmanager:
       enabled: false
+
     cleanPrometheusOperatorObjectNames: true
 
     # Component-specific RAM tuning (dropping high-cardinality/low-value metrics)
