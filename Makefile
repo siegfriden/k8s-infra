@@ -38,3 +38,6 @@ bootstrap: kubeconfig
 
 seal-secret:
 	kubeseal --format yaml < secret.yaml > sealed-secret.yaml
+
+forward-linkerd-viz:
+	kubectl -n linkerd-viz port-forward svc/web 8084:8084
