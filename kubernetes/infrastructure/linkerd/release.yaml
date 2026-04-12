@@ -94,4 +94,4 @@ spec:
     # Enable to access Linkerd Viz:
     # kubectl -n linkerd-viz port-forward svc/web 8084:8084
     dashboard:
-      enabled: false
+      enabled: true
