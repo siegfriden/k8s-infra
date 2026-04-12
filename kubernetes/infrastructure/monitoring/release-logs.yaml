@@ -45,6 +45,10 @@ spec:
 
           discovery.kubernetes "pods" {
             role = "pod"
+            selectors {
+              role = "pod"
+              field = "spec.nodeName=" + coalesce(env("HOSTNAME"), constants.hostname)
+            }
           }
 
           discovery.relabel "pods" {
@@ -128,9 +132,6 @@ spec:
         delete_request_store: filesystem
       limits_config:
         retention_period: 168h
-        max_query_parallelism: 2
-        ingestion_rate_mb: 4
-        ingestion_burst_size_mb: 8
       schemaConfig:
         configs:
           - from: "2024-04-01"
@@ -142,8 +143,6 @@ spec:
               period: 24h
       ingester:
         chunk_encoding: snappy
-      querier:
-        max_concurrent: 4
     singleBinary:
       replicas: 1
       persistence:

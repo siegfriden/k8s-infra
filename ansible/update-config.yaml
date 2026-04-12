@@ -4,6 +4,17 @@
   become: true
 
   tasks:
+    - name: Set inotify limits
+      ansible.builtin.sysctl:
+        name: "{{ item.key }}"
+        value: "{{ item.value }}"
+        state: present
+        sysctl_file: /etc/sysctl.d/99-kubernetes.conf
+        reload: yes
+      loop:
+        - { key: "fs.inotify.max_user_instances", value: "8192" }
+        - { key: "fs.inotify.max_user_watches", value: "131072" }
+
     - name: Copy K3s config files
       copy:
         src: files/k3s/
