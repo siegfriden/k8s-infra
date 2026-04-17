@@ -1,0 +1,33 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: no-hostports
+  annotations:
+    policies.kyverno.io/title: No Host Ports
+    policies.kyverno.io/category: CIS
+    policies.kyverno.io/description: >-
+      CIS Kubernetes benchmark 5.2.13: Minimize the admission of containers with
+      HostPorts.
+spec:
+  validationFailureAction: Audit
+  rules:
+    - name: no-hostports
+      match:
+        any:
+          - resources:
+              kinds: [Pod]
+      exclude:
+        any:
+          - resources:
+              namespaces:
+                - kube-system
+      validate:
+        message: "Use of hostPort is not allowed."
+        pattern:
+          spec:
+            =(initContainers):
+              - =(ports):
+                  - X(hostPort): null
+            containers:
+              - =(ports):
+                  - X(hostPort): null

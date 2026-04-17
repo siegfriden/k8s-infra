@@ -1,0 +1,35 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: no-added-capabilities
+  annotations:
+    policies.kyverno.io/title: No Added Capabilities
+    policies.kyverno.io/category: CIS
+    policies.kyverno.io/description: >-
+      CIS Kubernetes benchmark 5.2.10: Minimize the admission of containers with
+      capabilities assigned.
+spec:
+  validationFailureAction: Audit
+  rules:
+    - name: no-added-capabilities
+      match:
+        any:
+          - resources:
+              kinds: [Pod]
+      exclude:
+        any:
+          - resources:
+              namespaces:
+                - kube-system
+      validate:
+        message: "Adding capabilities is not allowed. Remove securityContext.capabilities.add."
+        pattern:
+          spec:
+            =(initContainers):
+              - =(securityContext):
+                  =(capabilities):
+                    X(add): null
+            containers:
+              - =(securityContext):
+                  =(capabilities):
+                    X(add): null
