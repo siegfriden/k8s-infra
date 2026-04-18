@@ -5,9 +5,9 @@ metadata:
   namespace: monitoring
 spec:
   parentRefs:
-    - name: main-gateway
-      namespace: gateway
-      sectionName: https
+    - group: gateway.networking.k8s.io
+      kind: ListenerSet
+      name: grafana
   hostnames:
     - grafana.siegfrid.com
   rules:
