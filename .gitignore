@@ -26,3 +26,4 @@ Thumbs.db
 
 # Custom suffix for ignored files (drafts, etc.)
 *.ignore
+*.ignore.*
