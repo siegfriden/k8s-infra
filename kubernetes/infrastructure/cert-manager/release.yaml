@@ -31,6 +31,8 @@ spec:
   values:
     crds:
       enabled: true
+    extraArgs:
+      - --feature-gates=GatewayAPI=true
 
 ---
 apiVersion: helm.toolkit.fluxcd.io/v2
