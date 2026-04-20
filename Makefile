@@ -44,5 +44,7 @@ bootstrap: kubeconfig
 seal-secret:
 	kubeseal --format yaml < secret.yaml > sealed-secret.yaml
 
-forward-linkerd-viz:
-	kubectl -n linkerd-viz port-forward svc/web 8084:8084
+forward-kyverno:
+	kubectl port-forward service/policy-reporter-ui 8082:8080 -n kyverno
+forward-linkerd:
+	kubectl port-forward service/web 8084:8084 -n linkerd-viz
